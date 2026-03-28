@@ -89,4 +89,4 @@ ggplot(data = latest_data) +
 
 The highest rated episode with a rating of `r rating_max`%, and other high rated episodes seem to cluster just above the average episode length of `r ep_avg` minutes.
 
-Suggesting that higher rated episodes are often slightly longer, although this does not directly imply that longer episodes receive higher ratings.
+This suggests that higher rated episodes are often slightly longer, although this does not directly imply that longer episodes receive higher ratings.
