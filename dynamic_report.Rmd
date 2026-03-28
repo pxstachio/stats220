@@ -1,0 +1,92 @@
+---
+title: My dynamic report
+output: html_fragment
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo=FALSE, message=FALSE, warning=FALSE, error=FALSE)
+
+```
+
+```{css}
+h2 {
+  border-bottom: 2px solid #BBBBBB;
+  padding-bottom: 5px;
+}
+```
+
+```{r}
+suppressPackageStartupMessages(library(tidyverse))
+
+#Reading csv into dataframe
+logged_data <- read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vSPQSVUAFlAdH0FuJqS2GsZmhN36-r1GF4KKoqBAYhdTs2to39bqD4KLfVUPHvdEIbu_Q9dUtQza4xX/pub?gid=2014668508&single=true&output=csv")
+
+#Renaming into new dataframe
+latest_data <- logged_data %>%
+  rename(timestamp = 1, 
+         show_name = 2,
+         ep_name = 3,
+         season = 4,
+         ep_length = 5,
+         rating = 6)
+```
+
+## Impact of Episode Length on Individual Episode Ratings
+
+```{r}
+#Summary Values
+
+#Number of rows (number of responses)
+num_responses <- nrow(latest_data)
+
+#min, max and average length of an episode
+ep_min <- min(latest_data$ep_length)
+ep_max <- max(latest_data$ep_length)
+ep_avg <- (sum(latest_data$ep_length) / num_responses) %>% round(0)
+
+#min, max and average rating
+rating_min <- min(latest_data$rating)
+rating_max <- max(latest_data$rating)
+rating_avg <- (sum(latest_data$rating) / num_responses) %>% round(0)
+```
+
+```{r}
+#Number of Episodes by Episode Length
+ggplot(data = latest_data) +
+  geom_bar(aes(x = ep_length), fill = "#58D358") +
+  labs(title = "Number of Episodes by Episode Length",
+       x = "Length of episode (mins)",
+       y = "Number of episodes")
+```
+
+There are `r num_responses` episodes (responses) in this data.
+
+The minimum and maximum episode lengths are `r ep_min` minutes and `r ep_max` minutes, respectively.
+
+The average episode length is around `r ep_avg` minutes.
+
+```{r}
+#Number of Episodes by Episode Rating
+ggplot(data = latest_data) +
+  geom_bar(aes(x = rating), fill = "#4C90D7") +
+  labs(title = "Number of Episodes by Episode Rating",
+       x = "Episode rating (%)",
+       y = "Number of episodes")
+```
+
+The minimum and maximum episode ratings are `r rating_min`% and `r rating_max`%, respectively.
+
+The average episode rating is around `r rating_avg`%.
+
+```{r}
+#Comparing Episode Length and Episode Rating
+ggplot(data = latest_data) +
+  geom_bar(aes(x = ep_length, fill = factor(rating))) +
+  labs(title = "Comparing Episode Length and Episode Rating",
+       x = "Episode length (mins)",
+       y = "Number of episodes")  
+```
+
+The highest rated episode with a rating of `r rating_max`%, and other high rated episodes seem to cluster just above the average episode length of `r ep_avg` minutes.
+
+Suggesting that higher rated episodes are often slightly longer, although this does not directly imply that longer episodes receive higher ratings.
