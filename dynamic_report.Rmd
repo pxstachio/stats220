@@ -16,7 +16,7 @@ h2 {
 ```
 
 ```{r}
-suppressPackageStartupMessages(library(tidyverse))
+library(tidyverse)
 
 #Reading csv into dataframe
 logged_data <- read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vSPQSVUAFlAdH0FuJqS2GsZmhN36-r1GF4KKoqBAYhdTs2to39bqD4KLfVUPHvdEIbu_Q9dUtQza4xX/pub?gid=2014668508&single=true&output=csv")
